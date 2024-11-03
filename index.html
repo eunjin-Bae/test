@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <link rel="stylesheet" href="reset.css">
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="start-screen">
+      <h1 id="title"></h1>
+      <div class="scroll-downs">
+        <div class="mousey">
+          <div class="scroller"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 오버레이 및 카드 요소를 페이지 전체에서 분리 -->
+<div class="overlay" id="overlay">
+  <div class="modal-card">
+    <h2>축하드립니다. <br />
+        좋은 도파민을 얻으셨습니다. 🎉  </h2>
+    <p>사랑해요 카드</p>
+  </div>
+</div>
+
+    <!-- 새로운 페이지 추가 -->
+<div class="new-page-section">
+  <div class="overlay" id="overlay">
+    <div class="modal-card">
+      <h2>Card Title</h2>
+      <p>Details about this card...</p>
+    </div>
+  </div>
+  <!-- 2x4 카드 그리드 추가 -->
+  <div class="card-grid">
+    <div class="card-item"></div>
+    <div class="card-item"></div>
+    <div class="card-item"></div>
+    <div class="card-item"></div>
+    <div class="card-item"></div>
+    <div class="card-item"></div>
+    <div class="card-item"></div>
+    <div class="card-item"></div>
+  </div>
+</div>
+
+<div class="new-page-section-2">
+  <div class="image-box">
+    <img src="images/img_heart.png" alt="행운의 이미지" class="animated-image">
+  </div>
+  <div class="text-box">
+    <h2>행운의 도파민 카드를 고른 당신! <br />오늘의 도파민 운세는? </h2>
+    <p>💬 '사랑' 카드는 아주 특별하면서도 흔히 볼 수 있는 도파민 입니다!<br />
+          사랑을 할 때 나오는 도파민은 인지능력을 올려주며 이때 분비되는 옥시토신은 <br />
+          기억력 향상에 도움이 됩니다! <br />
+       <br />
+       🌟 오늘의 도파민 운세 : 98점
+       </p>
+  </div>
+</div>
+
+
+  <div class="main-content-1">
+    <div class="sticky">
+      <div class="sticky-background">
+        <div class="card-frame">
+          <div class="card card1 good"><div class="front"></div><div class="back"></div></div>
+          <div class="card card2 bad"><div class="front"></div><div class="back"></div></div>
+          <div class="card card3 bad"><div class="front"></div><div class="back"></div></div>
+          <div class="card card4 good"><div class="front"></div><div class="back"></div></div>
+          <div class="card card5 good"><div class="front"></div><div class="back"></div></div>
+          <div class="card card6 good"><div class="front"></div><div class="back"></div></div>
+          <div class="card card7 bad"><div class="front"></div><div class="back"></div></div>
+          <div class="card card8 bad"><div class="front"></div><div class="back"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="end-screen" id="end-title">
+    어떤 카드를 고르시겠습니까?
+  </div>  
+<script>
+class CardRevealOnScroll {
+  constructor(wrapper, sticky) {
+    this.wrapper = wrapper;
+    this.sticky = sticky;
+    this.cards = sticky.querySelectorAll('.card');
+    this.revealPosition = 0; // 스크롤 위치 저장
+  }
+
+  init() {
+    this.revealPosition = this.wrapper.offsetTop - window.innerHeight * 0.8;
+    this.cards.forEach(card => {
+      card.style.opacity = '0'; // 초기 상태를 투명하게 설정
+      card.style.transform = 'translateX(50vw) rotateY(180deg)'; // 오른쪽에 위치하고 뒷면 상태로 시작
+      card.classList.remove('animated'); // 초기화 시 애니메이션 클래스 제거
+    });
+  }
+
+  animate() {
+    if (window.scrollY >= this.revealPosition) {
+      this.cards.forEach((card, index) => {
+        // 이미 애니메이션이 실행된 카드라면 무시
+        if (card.classList.contains('animated')) return;
+
+        // 첫 번째 단계: 위치 이동하며 뒷면 유지
+        setTimeout(() => {
+          card.style.transition = 'transform 2s ease';
+          card.style.transform = 'translateX(0) rotateY(180deg)'; // 뒷면 유지한 채 이동
+          card.style.opacity = '1'; // 불투명하게 변환
+        }, index * 500);
+
+        // 두 번째 단계: 위치 이동 후 앞면이 보이도록 회전
+        setTimeout(() => {
+          card.style.transition = 'transform 1s ease';
+          card.style.transform = 'translateX(0) rotateY(0deg)'; // 앞면으로 회전
+          card.classList.add('animated');
+        }, index * 500 + 2000);
+      });
+    }
+  }
+}
+
+const mainContent1 = document.querySelector('.main-content-1');
+const sticky = document.querySelector('.sticky');
+const cardRevealOnScroll = new CardRevealOnScroll(mainContent1, sticky);
+cardRevealOnScroll.init();
+
+window.addEventListener('scroll', function onScroll() {
+  cardRevealOnScroll.animate();
+  if (window.scrollY >= cardRevealOnScroll.revealPosition) {
+    window.removeEventListener('scroll', onScroll);
+  }
+});
+
+window.addEventListener('resize', () => {
+  cardRevealOnScroll.init();
+});
+
+</script>
+
+<head>
+  <!-- 기존 head 태그 내용들 -->
+  <script src="https://unpkg.com/typeit@8.3.3/dist/index.umd.js"></script>
+</head>
+<body>
+  <!-- 위의 start-screen 코드 -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      new TypeIt('#title')
+        .pause(1000)
+    });
+  </script>
+</body>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const endScreen = document.querySelector('.end-screen');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          endScreen.classList.add('animate');
+        }
+      });
+    }, {
+      threshold: 0.5 // 요소의 50%가 보일 때 애니메이션 시작
+    });
+    
+    observer.observe(endScreen);
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const background = document.createElement('div');
+    background.classList.add('body-background');
+    document.body.appendChild(background);
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          background.classList.add('expand');
+        }
+      });
+    }, {
+      threshold: 0.5 // 특정 섹션이 50% 보일 때 애니메이션 시작
+    });
+
+    const endScreen = document.querySelector('.end-screen');
+    observer.observe(endScreen);
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const overlay = document.getElementById('overlay');
+    const newPageSection = document.querySelector('.new-page-section');
+
+    newPageSection.addEventListener('click', () => {
+      overlay.classList.add('show');
+      newPageSection.classList.add('blur-background');
+    });
+
+    overlay.addEventListener('click', () => {
+      overlay.classList.remove('show');
+      newPageSection.classList.remove('blur-background');
+    });
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const overlay = document.getElementById('overlay');
+    const newPageSection = document.querySelector('.new-page-section');
+    const thirdPage = document.querySelector('.main-content-1'); // 3번째 페이지 요소
+
+    newPageSection.addEventListener('click', () => {
+      overlay.classList.add('show');
+      newPageSection.classList.add('blur-background');
+    });
+
+    overlay.addEventListener('click', () => {
+      overlay.classList.remove('show');
+      newPageSection.classList.remove('blur-background');
+    });
+
+    // 스크롤 이벤트로 카드 숨기기
+    window.addEventListener('scroll', () => {
+      const thirdPageTop = thirdPage.offsetTop;
+      const currentScrollPosition = window.scrollY + window.innerHeight;
+
+      // 스크롤 위치가 3번째 페이지의 시작 지점을 지날 때 카드 숨기기
+      if (currentScrollPosition >= thirdPageTop) {
+        overlay.classList.remove('show');
+        newPageSection.classList.remove('blur-background');
+      }
+    });
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const overlay = document.getElementById('overlay');
+    const newPageSection = document.querySelector('.new-page-section');
+    const newPageSection2 = document.querySelector('.new-page-section-2'); // 새로 추가된 페이지
+
+    newPageSection.addEventListener('click', () => {
+      overlay.classList.add('show');
+      newPageSection.classList.add('blur-background');
+    });
+
+    overlay.addEventListener('click', () => {
+      overlay.classList.remove('show');
+      newPageSection.classList.remove('blur-background');
+    });
+
+    // 스크롤 이벤트로 카드 숨기기
+    window.addEventListener('scroll', () => {
+      const newPageSection2Top = newPageSection2.getBoundingClientRect().top + window.scrollY;
+      const currentScrollPosition = window.scrollY + window.innerHeight;
+
+      // 스크롤 위치가 새로운 페이지의 시작 지점을 지날 때 카드 숨기기
+      if (currentScrollPosition >= newPageSection2Top) {
+        overlay.classList.remove('show');
+        newPageSection.classList.remove('blur-background');
+      }
+    });
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const textBox = document.querySelector('.text-box');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          textBox.classList.add('show');
+        }
+      });
+    }, {
+      threshold: 0.5 // 요소가 50% 보일 때 애니메이션 시작
+    });
+
+    observer.observe(textBox);
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 기존 타이핑 효과 (start-screen)
+    new TypeIt('#title')
+      .pause(800)
+      .type('카드를 한 장 선택해주세요.')
+      .go();
+
+    // IntersectionObserver를 사용하여 end-title에 타이핑 효과 추가
+    const endTitle = document.getElementById('end-title');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          new TypeIt('#end-title')
+      .pause(1000)
+      .delete(13, { delay: 1000 })
+      .type(' 삶을 선택하시겠습니까?')
+      .go();
+
+          // 애니메이션 후 observer 해제
+          observer.unobserve(endTitle);
+        }
+      });
+    }, {
+      threshold: 0.5 // 요소의 50%가 보일 때 애니메이션 시작
+    });
+
+    observer.observe(endTitle);
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const stickyBackground = document.querySelector('.sticky-background');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          stickyBackground.classList.add('show'); // 페이드 인 효과를 위한 클래스 추가
+        }
+      });
+    }, {
+      threshold: 0.2 // 요소가 50% 보일 때 애니메이션 시작
+    });
+
+    observer.observe(stickyBackground);
+  });
+</script>
+
+</body>
+</html>
